@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5D3C9E662F44B5010070CB0F /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 5D3C9E652F44B5010070CB0F /* Dependencies */; };
+		5D3C9E682F44B5010070CB0F /* DependenciesMacros in Frameworks */ = {isa = PBXBuildFile; productRef = 5D3C9E672F44B5010070CB0F /* DependenciesMacros */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		5D3C9E3C2F4490C80070CB0F /* uikit_trial_202602.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uikit_trial_202602.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -29,6 +34,11 @@
 			path = uikit_trial_202602;
 			sourceTree = "<group>";
 		};
+		5D3C9E6B2F44B5230070CB0F /* DI */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DI;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +46,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D3C9E682F44B5010070CB0F /* DependenciesMacros in Frameworks */,
+				5D3C9E662F44B5010070CB0F /* Dependencies in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,6 +57,7 @@
 		5D3C9E332F4490C80070CB0F = {
 			isa = PBXGroup;
 			children = (
+				5D3C9E6B2F44B5230070CB0F /* DI */,
 				5D3C9E3E2F4490C80070CB0F /* uikit_trial_202602 */,
 				5D3C9E3D2F4490C80070CB0F /* Products */,
 			);
@@ -75,9 +88,12 @@
 			);
 			fileSystemSynchronizedGroups = (
 				5D3C9E3E2F4490C80070CB0F /* uikit_trial_202602 */,
+				5D3C9E6B2F44B5230070CB0F /* DI */,
 			);
 			name = uikit_trial_202602;
 			packageProductDependencies = (
+				5D3C9E652F44B5010070CB0F /* Dependencies */,
+				5D3C9E672F44B5010070CB0F /* DependenciesMacros */,
 			);
 			productName = uikit_trial_202602;
 			productReference = 5D3C9E3C2F4490C80070CB0F /* uikit_trial_202602.app */;
@@ -107,6 +123,9 @@
 			);
 			mainGroup = 5D3C9E332F4490C80070CB0F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5D3C9E642F44B5010070CB0F /* XCRemoteSwiftPackageReference "swift-dependencies" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5D3C9E3D2F4490C80070CB0F /* Products */;
 			projectDirPath = "";
@@ -150,7 +169,6 @@
 				INFOPLIST_FILE = uikit_trial_202602/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -182,7 +200,6 @@
 				INFOPLIST_FILE = uikit_trial_202602/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -345,6 +362,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5D3C9E642F44B5010070CB0F /* XCRemoteSwiftPackageReference "swift-dependencies" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-dependencies";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.11.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5D3C9E652F44B5010070CB0F /* Dependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D3C9E642F44B5010070CB0F /* XCRemoteSwiftPackageReference "swift-dependencies" */;
+			productName = Dependencies;
+		};
+		5D3C9E672F44B5010070CB0F /* DependenciesMacros */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D3C9E642F44B5010070CB0F /* XCRemoteSwiftPackageReference "swift-dependencies" */;
+			productName = DependenciesMacros;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5D3C9E342F4490C80070CB0F /* Project object */;
 }
