@@ -38,31 +38,46 @@ class RootViewController: UIViewController {
 
     private let incrementButton: UIButton = {
         var config = UIButton.Configuration.filled()
-        config.title = "インクリメント"
-        config.cornerStyle = .large
+        config.image = UIImage(systemName: "plus")
+        config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 20)
+        config.cornerStyle = .capsule
         return UIButton(configuration: config)
     }()
 
-    private let decrementButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.title = "デクリメント"
-        config.cornerStyle = .large
+    private let resetButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(systemName: "xmark")
+        config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 20)
+        config.cornerStyle = .capsule
         return UIButton(configuration: config)
     }()
     
-    private let resetButton: UIButton = {
-        var config = UIButton.Configuration.bordered()
-        config.title = "リセット"
+    private let decrementButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.image = UIImage(systemName: "minus")
+        config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 20)
+        config.cornerStyle = .capsule
+        return UIButton(configuration: config)
+    }()
+
+    private let tipButton: UIButton = {
+        var config = UIButton.Configuration.tinted()
+        config.title = "Tipを見る"
         config.cornerStyle = .large
         return UIButton(configuration: config)
     }()
 
     private lazy var stackView: UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [valueLabel, incrementButton, decrementButton, resetButton])
-        sv.axis = .vertical
-        sv.spacing = 16
-        sv.translatesAutoresizingMaskIntoConstraints = false
-        return sv
+        let hStack = UIStackView(arrangedSubviews: [decrementButton, resetButton, incrementButton])
+        hStack.axis = .horizontal
+        hStack.spacing = 16
+        hStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        let vStack = UIStackView(arrangedSubviews: [valueLabel, hStack, tipButton])
+        vStack.axis = .vertical
+        vStack.spacing = 24
+        vStack.translatesAutoresizingMaskIntoConstraints = false
+        return vStack
     }()
 
     // MARK: - Lifecycle
@@ -109,6 +124,17 @@ class RootViewController: UIViewController {
         resetButton.addAction(UIAction { [weak self] _ in
             self?.viewModel.reset()
         }, for: .touchUpInside)
+
+        tipButton.addAction(UIAction { [weak self] _ in
+            self?.navigateToNumberTip()
+        }, for: .touchUpInside)
+    }
+
+    private func navigateToNumberTip() {
+        let number = viewModel.value.value
+        let viewModel = NumberTipViewModelBuilder().build(with: number)
+        let vc = NumberTipViewController(viewModel: viewModel)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

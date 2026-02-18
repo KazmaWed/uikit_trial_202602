@@ -19,3 +19,16 @@ extension DependencyValues {
         set { self[CounterRepositoryKey.self] = newValue }
     }
 }
+
+// MARK: - NumberTipRepository
+
+private enum NumberTipRepositoryKey: DependencyKey {
+    static let liveValue: any NumberTipRepository = NumberTipRepositoryImpl()
+}
+
+extension DependencyValues {
+    var numberTipRepository: any NumberTipRepository {
+        get { self[NumberTipRepositoryKey.self] }
+        set { self[NumberTipRepositoryKey.self] = newValue }
+    }
+}
