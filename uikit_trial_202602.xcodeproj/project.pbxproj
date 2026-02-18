@@ -34,11 +34,6 @@
 			path = uikit_trial_202602;
 			sourceTree = "<group>";
 		};
-		5D3C9E6B2F44B5230070CB0F /* DI */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = DI;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +52,6 @@
 		5D3C9E332F4490C80070CB0F = {
 			isa = PBXGroup;
 			children = (
-				5D3C9E6B2F44B5230070CB0F /* DI */,
 				5D3C9E3E2F4490C80070CB0F /* uikit_trial_202602 */,
 				5D3C9E3D2F4490C80070CB0F /* Products */,
 			);
@@ -88,7 +82,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				5D3C9E3E2F4490C80070CB0F /* uikit_trial_202602 */,
-				5D3C9E6B2F44B5230070CB0F /* DI */,
 			);
 			name = uikit_trial_202602;
 			packageProductDependencies = (
