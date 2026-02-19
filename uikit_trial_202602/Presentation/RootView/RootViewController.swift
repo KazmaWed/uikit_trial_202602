@@ -28,12 +28,27 @@ class RootViewController: UIViewController {
 
     // MARK: - Views
     
+    
     private let valueLabel: UILabel = {
         let label = UILabel()
-        label.text = "0"
+        label.text = "1"
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 32, weight: .bold)
         return label
+    }()
+    
+    private lazy var valueLabelCombined: UIStackView = {
+        let label = UILabel()
+        label.text = "No."
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 32, weight: .bold)
+        
+        let hStack = UIStackView(arrangedSubviews: [label, valueLabel])
+        hStack.axis = .horizontal
+        hStack.spacing = 4
+        hStack.alignment = .center
+        hStack.translatesAutoresizingMaskIntoConstraints = false
+        return hStack
     }()
 
     private let incrementButton: UIButton = {
@@ -62,20 +77,21 @@ class RootViewController: UIViewController {
 
     private let tipButton: UIButton = {
         var config = UIButton.Configuration.tinted()
-        config.title = "Tipを見る"
+        config.title = "ポケモンを調べる"
         config.cornerStyle = .large
         return UIButton(configuration: config)
     }()
-
+    
     private lazy var stackView: UIStackView = {
-        let hStack = UIStackView(arrangedSubviews: [decrementButton, resetButton, incrementButton])
-        hStack.axis = .horizontal
-        hStack.spacing = 16
-        hStack.translatesAutoresizingMaskIntoConstraints = false
+        let buttonsStack = UIStackView(arrangedSubviews: [decrementButton, resetButton, incrementButton])
+        buttonsStack.axis = .horizontal
+        buttonsStack.spacing = 16
+        buttonsStack.translatesAutoresizingMaskIntoConstraints = false
         
-        let vStack = UIStackView(arrangedSubviews: [valueLabel, hStack, tipButton])
+        let vStack = UIStackView(arrangedSubviews: [valueLabelCombined, buttonsStack, tipButton])
         vStack.axis = .vertical
         vStack.spacing = 24
+        vStack.alignment = .center
         vStack.translatesAutoresizingMaskIntoConstraints = false
         return vStack
     }()
@@ -106,7 +122,7 @@ class RootViewController: UIViewController {
 
     private func setupBindings() {
         viewModel.value
-            .map { String($0) }
+            .map { String(format: "%03d", $0) }
             .receive(on: DispatchQueue.main)
             .assign(to: \.text, on: valueLabel)
             .store(in: &cancellables)

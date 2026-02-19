@@ -27,22 +27,45 @@ class PokedexViewController: UIViewController {
     }
 
     // MARK: - Views
-
-    private let tipLabel: UILabel = {
+    
+    private let numberLabel: UILabel = {
         let label = UILabel()
-        label.text = ""
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 12, weight: .bold)
         label.numberOfLines = 0
         return label
     }()
 
-    private lazy var stackView: UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [tipLabel])
+    private let nameLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 20, weight: .semibold)
+        label.numberOfLines = 0
+        return label
+    }()
+
+    private let spriteImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
+    }()
+    
+    private lazy var labelStack: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [numberLabel, nameLabel])
         sv.axis = .vertical
-        sv.spacing = 16
-        sv.translatesAutoresizingMaskIntoConstraints = false
+        sv.spacing = 4
+        sv.alignment = .leading
         return sv
+    }()
+
+    private lazy var stackView: UIStackView = {
+        let vStack = UIStackView(arrangedSubviews: [labelStack, spriteImageView])
+        vStack.axis = .vertical
+        vStack.spacing = 16
+        vStack.alignment = .center
+        vStack.translatesAutoresizingMaskIntoConstraints = false
+        return vStack
     }()
 
     // MARK: - Lifecycle
@@ -67,10 +90,10 @@ class PokedexViewController: UIViewController {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            spriteImageView.widthAnchor.constraint(equalToConstant: 180),
+            spriteImageView.heightAnchor.constraint(equalToConstant: 180),
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
         ])
     }
 
@@ -86,17 +109,33 @@ class PokedexViewController: UIViewController {
 
     private func setupBindings() {
         viewModel.data
-            .map { $0?.name ?? "Unknown"}
             .receive(on: DispatchQueue.main)
-            .assign(to: \.text, on: tipLabel)
+            .sink { [weak self] data in
+                guard let data else { return }
+                self?.numberLabel.text = "No. \(String(format: "%03d", data.id))"
+                self?.nameLabel.text = data.name.capitalized
+                if let urlString = data.sprites.frontDefault,
+                   let url = URL(string: urlString) {
+                    self?.loadImage(from: url)
+                }
+            }
             .store(in: &cancellables)
+    }
+
+    private func loadImage(from url: URL) {
+        Task {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            await MainActor.run {
+                self.spriteImageView.image = UIImage(data: data)
+            }
+        }
     }
 
     // MARK: - Actions
 
     @objc private func didTapShare() {
-        let text = viewModel.data.value?.name ?? "Unknown"
-        guard !text.isEmpty else { return }
+        guard let data = viewModel.data.value else { return }
+        let text = "No. \(String(format: "%03d", data.id))  \(data.name.capitalized)"
         let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
         present(activityVC, animated: true)
     }
