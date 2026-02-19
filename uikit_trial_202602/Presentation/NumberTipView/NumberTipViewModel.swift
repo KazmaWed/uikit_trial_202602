@@ -30,8 +30,8 @@ final class NumberTipViewModel {
 
     // MARK: - Methods
 
-    func fetchTip() {
-        let tip = repository.getNumberTip(number)
+    func fetchTip() async {
+        let tip = await repository.getNumberTip(number)
         self.tip.send(tip)
     }
 

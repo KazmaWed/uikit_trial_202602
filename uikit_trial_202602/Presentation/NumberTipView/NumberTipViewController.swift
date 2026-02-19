@@ -53,7 +53,9 @@ class NumberTipViewController: UIViewController {
         setupConstraints()
         setupNavigationBar()
         setupBindings()
-        viewModel.fetchTip()
+        Task {
+            await viewModel.fetchTip()
+        }
     }
 
     // MARK: - Setup

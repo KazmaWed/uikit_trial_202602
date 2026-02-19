@@ -6,5 +6,5 @@
 //
 
 protocol NumberTipRepository {
-    func getNumberTip(_ : Int) -> String
+    func getNumberTip(_ : Int) async -> String
 }

@@ -46,7 +46,7 @@ class RootViewController: UIViewController {
 
     private let resetButton: UIButton = {
         var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "xmark")
+        config.image = UIImage(systemName: "arrow.counterclockwise")
         config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 20)
         config.cornerStyle = .capsule
         return UIButton(configuration: config)
