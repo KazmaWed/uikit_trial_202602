@@ -31,7 +31,6 @@ class RootViewController: UIViewController {
     
     private let valueLabel: UILabel = {
         let label = UILabel()
-        label.text = "1"
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 32, weight: .bold)
         return label

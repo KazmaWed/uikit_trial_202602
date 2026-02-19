@@ -16,7 +16,7 @@ final class RootViewModel {
 
     // MARK: - Output
 
-    let value: CurrentValueSubject<Int, Never> = .init(0)
+    let value: CurrentValueSubject<Int, Never> = .init(1)
 
     // MARK: - Methods
 

@@ -5,18 +5,18 @@
 
 final class CounterRepositoryImpl: CounterRepository {
 
-    private var value: Int = 0
+    private var value: Int = 1
 
     func increment() {
         value += 1
     }
 
     func decrement() {
-        value -= 1
+        value = max(1, value - 1)
     }
 
     func reset() {
-        value = 0
+        value = 1
     }
 
     func getValue() -> Int {
