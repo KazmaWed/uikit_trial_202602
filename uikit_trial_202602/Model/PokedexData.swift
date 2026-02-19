@@ -1,13 +1,13 @@
 //
-//  PokemonResponse.swift
+//  PokedexData.swift
 //  uikit_trial_202602
 //
-//  Created by Kazma Wed on 2026/02/18.
+//  Created by Kazma Wed on 2026/02/19.
 //
 
-// MARK: - PokemonResponse
+// MARK: - PokedexData
 
-struct PokemonResponse: Decodable {
+struct PokedexData: Decodable {
     let abilities: [PokemonAbility]
     let baseExperience: Int?
     let cries: Cries
@@ -49,10 +49,10 @@ struct NamedAPIResource: Decodable {
     let url: String
 }
 
-// MARK: - Ability
+// MARK: - PokemonAbility
 
 struct PokemonAbility: Decodable {
-    let ability: NamedAPIResource
+    let ability: NamedAPIResource?
     let isHidden: Bool
     let slot: Int
 
@@ -98,7 +98,7 @@ struct HeldItemVersionDetail: Decodable {
     let version: NamedAPIResource
 }
 
-// MARK: - Move
+// MARK: - PokemonMove
 
 struct PokemonMove: Decodable {
     let move: NamedAPIResource
@@ -197,7 +197,7 @@ struct SpriteSet: Decodable {
     }
 }
 
-// MARK: - Stat
+// MARK: - PokemonStat
 
 struct PokemonStat: Decodable {
     let baseStat: Int
@@ -210,7 +210,7 @@ struct PokemonStat: Decodable {
     }
 }
 
-// MARK: - Type
+// MARK: - PokemonType
 
 struct PokemonType: Decodable {
     let slot: Int

@@ -5,6 +5,6 @@
 //  Created by Kazma Wed on 2026/02/18.
 //
 
-protocol NumberTipRepository {
-    func getNumberTip(_ : Int) async -> String
+protocol PokeApiRepository {
+    func getPokedexData(_ number: Int) async throws -> PokedexData
 }

@@ -7,12 +7,13 @@
 
 import Combine
 import Dependencies
+import Foundation
 
-final class NumberTipViewModel {
+final class PokedexViewModel {
 
     // MARK: - Dependency
 
-    @Dependency(\.numberTipRepository) private var repository
+    @Dependency(\.pokemonApiRepository) private var repository
 
     // MARK: - Properties
 
@@ -20,7 +21,7 @@ final class NumberTipViewModel {
 
     // MARK: - Output
 
-    let tip: CurrentValueSubject<String, Never> = .init("")
+    let data: CurrentValueSubject<PokedexData?, Never> = .init(nil)
 
     // MARK: - Init
 
@@ -31,8 +32,12 @@ final class NumberTipViewModel {
     // MARK: - Methods
 
     func fetchTip() async {
-        let tip = await repository.getNumberTip(number)
-        self.tip.send(tip)
+        do {
+            let data = try await repository.getPokedexData(number)
+            self.data.send(data)
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
 
 }

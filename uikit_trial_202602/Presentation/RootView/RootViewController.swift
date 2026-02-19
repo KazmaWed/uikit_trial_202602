@@ -132,8 +132,8 @@ class RootViewController: UIViewController {
 
     private func navigateToNumberTip() {
         let number = viewModel.value.value
-        let viewModel = NumberTipViewModelBuilder().build(with: number)
-        let vc = NumberTipViewController(viewModel: viewModel)
+        let viewModel = PokedexViewModelBuilder().build(with: number)
+        let vc = PokedexViewController(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

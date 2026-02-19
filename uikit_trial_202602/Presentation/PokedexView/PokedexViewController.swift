@@ -8,16 +8,16 @@
 import Combine
 import UIKit
 
-class NumberTipViewController: UIViewController {
+class PokedexViewController: UIViewController {
 
     // MARK: - Dependencies
 
-    private let viewModel: NumberTipViewModel
+    private let viewModel: PokedexViewModel
     private var cancellables: Set<AnyCancellable> = []
 
     // MARK: - Init
 
-    init(viewModel: NumberTipViewModel) {
+    init(viewModel: PokedexViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -85,8 +85,8 @@ class NumberTipViewController: UIViewController {
     }
 
     private func setupBindings() {
-        viewModel.tip
-            .map { Optional($0) }
+        viewModel.data
+            .map { $0?.name ?? "Unknown"}
             .receive(on: DispatchQueue.main)
             .assign(to: \.text, on: tipLabel)
             .store(in: &cancellables)
@@ -95,7 +95,7 @@ class NumberTipViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func didTapShare() {
-        let text = viewModel.tip.value
+        let text = viewModel.data.value?.name ?? "Unknown"
         guard !text.isEmpty else { return }
         let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
         present(activityVC, animated: true)

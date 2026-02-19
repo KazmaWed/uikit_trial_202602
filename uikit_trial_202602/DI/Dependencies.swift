@@ -20,15 +20,15 @@ extension DependencyValues {
     }
 }
 
-// MARK: - NumberTipRepository
+// MARK: - PokeApiRepository
 
-private enum NumberTipRepositoryKey: DependencyKey {
-    static let liveValue: any NumberTipRepository = NumberTipRepositoryImpl()
+private enum PokeApiRepositoryKey: DependencyKey {
+    static let liveValue: any PokeApiRepository = PokeApiRepositoryImpl()
 }
 
 extension DependencyValues {
-    var numberTipRepository: any NumberTipRepository {
-        get { self[NumberTipRepositoryKey.self] }
-        set { self[NumberTipRepositoryKey.self] = newValue }
+    var pokemonApiRepository: any PokeApiRepository {
+        get { self[PokeApiRepositoryKey.self] }
+        set { self[PokeApiRepositoryKey.self] = newValue }
     }
 }
