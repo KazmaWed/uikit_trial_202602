@@ -10,6 +10,12 @@ import UIKit
 
 class PokedexViewController: UIViewController {
 
+    // MARK: - Constants
+
+    private enum Constants {
+        static let imageSize: CGFloat = 180
+    }
+
     // MARK: - Dependencies
 
     private let viewModel: PokedexViewModel
@@ -50,20 +56,19 @@ class PokedexViewController: UIViewController {
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
-    
-    private lazy var labelStack: UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [numberLabel, nameLabel])
-        sv.axis = .vertical
-        sv.spacing = 4
-        sv.alignment = .leading
-        return sv
+
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
     }()
 
     private lazy var stackView: UIStackView = {
-        let vStack = UIStackView(arrangedSubviews: [labelStack, spriteImageView])
+        let vStack = UIStackView(arrangedSubviews: [numberLabel, nameLabel, spriteImageView])
         vStack.axis = .vertical
-        vStack.spacing = 16
-        vStack.alignment = .center
+        vStack.spacing = 4
+        vStack.alignment = .leading
         vStack.translatesAutoresizingMaskIntoConstraints = false
         return vStack
     }()
@@ -86,12 +91,19 @@ class PokedexViewController: UIViewController {
     private func setupViews() {
         view.backgroundColor = .systemBackground
         view.addSubview(stackView)
+        view.addSubview(activityIndicator)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            spriteImageView.widthAnchor.constraint(equalToConstant: 180),
-            spriteImageView.heightAnchor.constraint(equalToConstant: 180),
+            spriteImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
+            spriteImageView.heightAnchor.constraint(equalToConstant: Constants.imageSize),
+
+            activityIndicator.centerXAnchor.constraint(equalTo: spriteImageView.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: spriteImageView.centerYAnchor),
+            activityIndicator.widthAnchor.constraint(equalToConstant: Constants.imageSize),
+            activityIndicator.heightAnchor.constraint(equalToConstant: Constants.imageSize),
+
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
@@ -108,15 +120,36 @@ class PokedexViewController: UIViewController {
     }
 
     private func setupBindings() {
-        viewModel.data
+        viewModel.state
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] data in
-                guard let data else { return }
-                self?.numberLabel.text = "No. \(String(format: "%03d", data.id))"
+            .sink { [weak self] state in
+                // Always show number (available from init)
+                self?.numberLabel.text = "No. \(String(format: "%03d", state.number))"
+
+                // Handle loading state
+                if state.isLoading {
+                    self?.activityIndicator.startAnimating()
+                    self?.nameLabel.text = "Loading..."
+                    self?.spriteImageView.image = nil
+                    return
+                }
+
+                self?.activityIndicator.stopAnimating()
+
+                guard let data = state.data else {
+                    self?.nameLabel.text = ""
+                    return
+                }
+
+                // Update name label
                 self?.nameLabel.text = data.name.capitalized
+
+                // Load image after text rendering is complete
                 if let urlString = data.sprites.frontDefault,
                    let url = URL(string: urlString) {
-                    self?.loadImage(from: url)
+                    DispatchQueue.main.async {
+                        self?.loadImage(from: url)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -134,7 +167,7 @@ class PokedexViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func didTapShare() {
-        guard let data = viewModel.data.value else { return }
+        guard let data = viewModel.state.value.data else { return }
         let text = "No. \(String(format: "%03d", data.id))  \(data.name.capitalized)"
         let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
         present(activityVC, animated: true)

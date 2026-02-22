@@ -7,7 +7,7 @@
 
 // MARK: - PokedexData
 
-struct PokedexData: Decodable {
+struct PokedexData: Decodable, Equatable {
     let abilities: [PokemonAbility]
     let baseExperience: Int?
     let cries: Cries
@@ -44,14 +44,14 @@ struct PokedexData: Decodable {
 
 // MARK: - NamedAPIResource
 
-struct NamedAPIResource: Decodable {
+struct NamedAPIResource: Decodable, Equatable {
     let name: String
     let url: String
 }
 
 // MARK: - PokemonAbility
 
-struct PokemonAbility: Decodable {
+struct PokemonAbility: Decodable, Equatable {
     let ability: NamedAPIResource?
     let isHidden: Bool
     let slot: Int
@@ -64,14 +64,14 @@ struct PokemonAbility: Decodable {
 
 // MARK: - Cries
 
-struct Cries: Decodable {
+struct Cries: Decodable, Equatable {
     let latest: String?
     let legacy: String?
 }
 
 // MARK: - GameIndex
 
-struct GameIndex: Decodable {
+struct GameIndex: Decodable, Equatable {
     let gameIndex: Int
     let version: NamedAPIResource
 
@@ -83,7 +83,7 @@ struct GameIndex: Decodable {
 
 // MARK: - HeldItem
 
-struct HeldItem: Decodable {
+struct HeldItem: Decodable, Equatable {
     let item: NamedAPIResource
     let versionDetails: [HeldItemVersionDetail]
 
@@ -93,14 +93,14 @@ struct HeldItem: Decodable {
     }
 }
 
-struct HeldItemVersionDetail: Decodable {
+struct HeldItemVersionDetail: Decodable, Equatable {
     let rarity: Int
     let version: NamedAPIResource
 }
 
 // MARK: - PokemonMove
 
-struct PokemonMove: Decodable {
+struct PokemonMove: Decodable, Equatable {
     let move: NamedAPIResource
     let versionGroupDetails: [MoveVersionGroupDetail]
 
@@ -110,7 +110,7 @@ struct PokemonMove: Decodable {
     }
 }
 
-struct MoveVersionGroupDetail: Decodable {
+struct MoveVersionGroupDetail: Decodable, Equatable {
     let levelLearnedAt: Int
     let moveLearnMethod: NamedAPIResource
     let versionGroup: NamedAPIResource
@@ -124,21 +124,21 @@ struct MoveVersionGroupDetail: Decodable {
 
 // MARK: - PastAbility
 
-struct PastAbility: Decodable {
+struct PastAbility: Decodable, Equatable {
     let abilities: [PokemonAbility]
     let generation: NamedAPIResource
 }
 
 // MARK: - PastType
 
-struct PastType: Decodable {
+struct PastType: Decodable, Equatable {
     let generation: NamedAPIResource
     let types: [PokemonType]
 }
 
 // MARK: - Sprites
 
-struct Sprites: Decodable {
+struct Sprites: Decodable, Equatable {
     let backDefault: String?
     let backFemale: String?
     let backShiny: String?
@@ -162,7 +162,7 @@ struct Sprites: Decodable {
     }
 }
 
-struct SpritesOther: Decodable {
+struct SpritesOther: Decodable, Equatable {
     let dreamWorld: SpriteSet?
     let home: SpriteSet?
     let officialArtwork: SpriteSet?
@@ -175,7 +175,7 @@ struct SpritesOther: Decodable {
     }
 }
 
-struct SpriteSet: Decodable {
+struct SpriteSet: Decodable, Equatable {
     let backDefault: String?
     let backFemale: String?
     let backShiny: String?
@@ -199,7 +199,7 @@ struct SpriteSet: Decodable {
 
 // MARK: - PokemonStat
 
-struct PokemonStat: Decodable {
+struct PokemonStat: Decodable, Equatable {
     let baseStat: Int
     let effort: Int
     let stat: NamedAPIResource
@@ -212,7 +212,7 @@ struct PokemonStat: Decodable {
 
 // MARK: - PokemonType
 
-struct PokemonType: Decodable {
+struct PokemonType: Decodable, Equatable {
     let slot: Int
     let type: NamedAPIResource
 }

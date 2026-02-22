@@ -35,20 +35,6 @@ class RootViewController: UIViewController {
         label.font = .systemFont(ofSize: 32, weight: .bold)
         return label
     }()
-    
-    private lazy var valueLabelCombined: UIStackView = {
-        let label = UILabel()
-        label.text = "No."
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 32, weight: .bold)
-        
-        let hStack = UIStackView(arrangedSubviews: [label, valueLabel])
-        hStack.axis = .horizontal
-        hStack.spacing = 4
-        hStack.alignment = .center
-        hStack.translatesAutoresizingMaskIntoConstraints = false
-        return hStack
-    }()
 
     private let incrementButton: UIButton = {
         var config = UIButton.Configuration.filled()
@@ -74,7 +60,7 @@ class RootViewController: UIViewController {
         return UIButton(configuration: config)
     }()
 
-    private let tipButton: UIButton = {
+    private let searchButton: UIButton = {
         var config = UIButton.Configuration.tinted()
         config.title = "ポケモンを調べる"
         config.cornerStyle = .large
@@ -87,7 +73,7 @@ class RootViewController: UIViewController {
         buttonsStack.spacing = 16
         buttonsStack.translatesAutoresizingMaskIntoConstraints = false
         
-        let vStack = UIStackView(arrangedSubviews: [valueLabelCombined, buttonsStack, tipButton])
+        let vStack = UIStackView(arrangedSubviews: [valueLabel, buttonsStack, searchButton])
         vStack.axis = .vertical
         vStack.spacing = 24
         vStack.alignment = .center
@@ -120,8 +106,8 @@ class RootViewController: UIViewController {
     }
 
     private func setupBindings() {
-        viewModel.value
-            .map { String(format: "%03d", $0) }
+        viewModel.state
+            .map { String(format: "No. %03d", $0.value) }
             .receive(on: DispatchQueue.main)
             .assign(to: \.text, on: valueLabel)
             .store(in: &cancellables)
@@ -140,13 +126,13 @@ class RootViewController: UIViewController {
             self?.viewModel.reset()
         }, for: .touchUpInside)
 
-        tipButton.addAction(UIAction { [weak self] _ in
+        searchButton.addAction(UIAction { [weak self] _ in
             self?.navigateToNumberTip()
         }, for: .touchUpInside)
     }
 
     private func navigateToNumberTip() {
-        let number = viewModel.value.value
+        let number = viewModel.state.value.value
         let viewModel = PokedexViewModelBuilder().build(with: number)
         let vc = PokedexViewController(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: true)

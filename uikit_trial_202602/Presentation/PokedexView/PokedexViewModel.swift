@@ -11,33 +11,58 @@ import Foundation
 
 final class PokedexViewModel {
 
+    // MARK: - State
+
+    struct State: Equatable {
+        var number: Int
+        var data: PokedexData?
+        var isLoading: Bool = false
+        var errorMessage: String?
+    }
+
     // MARK: - Dependency
 
     @Dependency(\.pokemonApiRepository) private var repository
 
-    // MARK: - Properties
-
-    private let number: Int
-
     // MARK: - Output
 
-    let data: CurrentValueSubject<PokedexData?, Never> = .init(nil)
+    let state: CurrentValueSubject<State, Never>
 
     // MARK: - Init
 
     init(number: Int) {
-        self.number = number
+        self.state = .init(State(number: number))
     }
 
     // MARK: - Methods
 
     func fetchTip() async {
+        updateState { state in
+            state.isLoading = true
+            state.errorMessage = nil
+        }
+
         do {
-            let data = try await repository.getPokedexData(number)
-            self.data.send(data)
+            let data = try await repository.getPokedexData(state.value.number)
+            updateState { state in
+                state.data = data
+                state.isLoading = false
+            }
         } catch let error {
+            updateState { state in
+                state.isLoading = false
+                state.errorMessage = error.localizedDescription
+            }
             print(error.localizedDescription)
         }
+    }
+
+    // MARK: - Private Methods
+
+    private func updateState(_ update: (inout State) -> Void) {
+        var newState = state.value
+        update(&newState)
+        state.send(newState)
     }
 
 }
